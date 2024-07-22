@@ -1,4 +1,4 @@
-package com.Operations;
+package com.Controller;
 
 public class Parser {
     public static boolean valPattern(String input, String pattern) {

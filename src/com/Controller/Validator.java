@@ -1,10 +1,10 @@
-package com.Operations;
+package com.Controller;
 
 import java.util.ArrayList;
 
-import com.Item.Device;
-import com.Item.FileReport;
-import com.Item.Teacher;
+import com.Model.Device;
+import com.Model.FileReport;
+import com.Model.Teacher;
 
 public class Validator {
     public static boolean validateDescriptionField(String input) {

@@ -1,12 +1,12 @@
-package com.Interface;
+package com.View;
 
 import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.Item.*;
-import com.Operations.*;
+import com.Controller.*;
+import com.Model.*;
 
 public class GraphicMenu extends JFrame {
     private JPanel panelFormInfo;

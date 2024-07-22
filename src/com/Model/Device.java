@@ -1,4 +1,4 @@
-package com.Item;
+package com.Model;
 
 public class Device {
     private String description;

@@ -1,5 +1,5 @@
-import com.Item.FileReport;
-import com.Interface.GraphicMenu;
+import com.Model.FileReport;
+import com.View.GraphicMenu;
 
 
 public class Main {

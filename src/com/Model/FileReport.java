@@ -1,4 +1,4 @@
-package com.Item;
+package com.Model;
 
 import java.io.File;
 import java.io.BufferedReader;
@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.Operations.*;
+import com.Controller.*;
 
 public class FileReport {
     public ArrayList<Device> deviceList;
