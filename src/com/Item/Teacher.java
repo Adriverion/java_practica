@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Teacher {
     private String id;
-    public ArrayList<Integer> subtracted;
+    private ArrayList<Integer> subtracted;
 
     public Teacher(String id) {
         this.id = id;
@@ -17,5 +17,15 @@ public class Teacher {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer[] getListDevice() {
+        return subtracted.toArray(new Integer[0]);
+    }
+
+    public void associateDevice(int index) {
+        if(!subtracted.contains(index)) {
+            subtracted.add(index);
+        }
     }
 }

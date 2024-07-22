@@ -1,10 +1,14 @@
 package com.Interface;
 
 import javax.swing.*;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import com.Item.Device;
+import com.Item.Teacher;
+import com.Operations.*;
 
 public class GraphicMenu extends JFrame {
     private JButton addDeviceButton;
@@ -28,10 +32,10 @@ public class GraphicMenu extends JFrame {
     private JLabel teacherIdLabel;
     private JTextField teacherIdTextField;
 
-    public GraphicMenu() {
+    public GraphicMenu(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
         initComponents();
         buildMenu();
-        listeners();
+        listeners(deviceList, userList);
     }
                      
     private void initComponents() {
@@ -203,12 +207,18 @@ public class GraphicMenu extends JFrame {
         pack();
     }
 
-    private void listeners() {
+    private void listeners(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         addDeviceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                mensajePrueba(evt);
+                validation(evt, deviceList, userList);
+            }
+        });
+
+        reportButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                printForTeacher(deviceList, userList);
             }
         });
 
@@ -219,16 +229,37 @@ public class GraphicMenu extends JFrame {
         });
     }
 
-    private void mensajePrueba(ActionEvent event) {
-        if (descriptionTextField.getText().isEmpty()) {
-            System.out.println("No escribiste nada");
-        } else {
-            String text = descriptionTextField.getText();
+    private void validation(ActionEvent event, ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
+        String[] textFields = new String[] {
+            descriptionTextField.getText(),
+            amountTextField.getText(),
+            priceTextField.getText(),
+            dateTextField.getText(),
+            invoiceTextField.getText(),
+            teacherIdTextField.getText()
+        };
+
+        for (String text : textFields) {
             System.out.println(text);
+        }
+
+        Updater.addDevice(deviceList, userList, textFields);
+    }
+
+    private void printForTeacher(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
+        for(Teacher user : userList) {
+            System.out.println("Teacher: " + user.getId());
+            for (int idDevice : user.getListDevice()) {
+                System.out.println("    Descripción: "+ deviceList.get(idDevice).getDescription());
+                System.out.println("    Cantidad: " + deviceList.get(idDevice).getAmount());
+                System.out.println("    Precio: " + deviceList.get(idDevice).getPrice());
+                System.out.println("    Factura: " + deviceList.get(idDevice).getInvoice());
+                System.out.println("    Fecha: " + deviceList.get(idDevice).getDate() + "\n");
+            }
         }
     }
 
-    public void init() {
+    public void init(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -250,11 +281,8 @@ public class GraphicMenu extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GraphicMenu().setVisible(true);
+                new GraphicMenu(deviceList, userList).setVisible(true);
             }
         });
     }                
 }
-
-
-

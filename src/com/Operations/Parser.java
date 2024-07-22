@@ -1,11 +1,11 @@
 package com.Operations;
 
 public class Parser {
-    public boolean valPattern(String input, String pattern) {
+    public static boolean valPattern(String input, String pattern) {
         return input.matches(pattern);
     }
 
-    public int[] parseDate(String input) {
+    public static int[] parseDate(String input) {
         if (input.matches("^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$")) {
             String[] splitInput = input.split("/");
             int[] date = new int[] {
@@ -24,7 +24,7 @@ public class Parser {
         return null;
     }
 
-    public String[] splitString(String input) {
+    public static String[] splitString(String input) {
         return input.split("#");
     }
 }
