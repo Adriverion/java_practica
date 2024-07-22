@@ -5,6 +5,7 @@ import com.Item.Device;
 import com.Item.Teacher;
 import com.Operations.Parser;
 import com.Operations.Updater;
+import com.Interface.GraphicMenu;
 
 
 public class Main {
@@ -21,7 +22,9 @@ public class Main {
             }
         }
     }
+
     public static void main(String[] args) {
+        GraphicMenu experimentalFrame = new GraphicMenu();
         ArrayList<Device> listItem = new ArrayList<>();
         ArrayList<Teacher> teacher_users = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
@@ -30,10 +33,11 @@ public class Main {
         String path = "C:/Users/adrian/Documents/Practicas Programacion/JAVA/EjercicioB/src/resources/inventario.txt";
 
         Updater.chargeFile(listItem, teacher_users, path);
-        printForTeacher(listItem, teacher_users);
+
         do {
             System.out.println("1. Agregar Nuevo Dispositivo");
             System.out.println("2. Listar Dispositivos\n");
+            System.out.println("3. Iniciar ventana Gráfica (Experimental)");
             System.out.println("0. Salir del Programa");
             int select = sc.nextInt();
             sc.nextLine();
@@ -59,22 +63,14 @@ public class Main {
                     if (listItem.isEmpty()) {
                         System.out.println("La lista está vacía");
                     } else {
-                        System.out.println("LISTA DE EQUIPOS\n\n");
-                        for (int i = 0; i < listItem.size(); ++i) {
-                            System.out.println("Profesor: " + listItem.get(i).getIdTeacher());
-
-                            for (int j = 0; j < listItem.size(); ++j) {
-                                if (listItem.get(j).getIdTeacher() == listItem.get(i).getIdTeacher()) {
-                                    System.out.println("    Descripción: "+ listItem.get(j).getDescription());
-                                    System.out.println("    Cantidad: " + listItem.get(j).getAmount());
-                                    System.out.println("    Precio: " + listItem.get(j).getPrice());
-                                    System.out.println("    Factura: " + listItem.get(j).getInvoice());
-                                    System.out.println("    Fecha: " + listItem.get(j).getDate() + "\n");
-                                }
-                            }
-                        }
-                        System.out.print("\n\n");
+                        System.out.println("LISTA DE EQUIPOS\n");
+                        printForTeacher(listItem, teacher_users);
+                        System.out.println();
                     }
+                    break;
+                case 3:
+                    System.out.println("Advertencia, la opción es experimental, no se encuentra en funcionamiento");
+                    experimentalFrame.init();
                     break;
                 default:
                     System.out.println("Opción Inválida, los valores no son los correctos");
