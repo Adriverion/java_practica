@@ -4,38 +4,39 @@ import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-import com.Item.Device;
-import com.Item.Teacher;
+import com.Item.*;
 import com.Operations.*;
 
 public class GraphicMenu extends JFrame {
-    private JButton addDeviceButton;
-    private JLabel amountLabel;
-    private JTextField amountTextField;
-    private JLabel dateFormatLabel;
-    private JLabel dateLabel;
-    private JTextField dateTextField;
-    private JLabel descriptionLabel;
-    private JTextField descriptionTextField;
-    private JButton exitButton;
-    private JLabel formInfoLabel;
-    private JLabel invoiceLabel;
-    private JTextField invoiceTextField;
-    private JPanel panelButtons;
     private JPanel panelFormInfo;
     private JPanel panelFormTextFields;
+    private JPanel panelButtons;
+    
+    private JLabel formInfoLabel;
+    private JLabel descriptionLabel;
+    private JLabel amountLabel;
     private JLabel priceLabel;
-    private JTextField priceTextField;
-    private JButton reportButton;
+    private JLabel dateLabel;
+    private JLabel dateFormatLabel;
+    private JLabel invoiceLabel;
     private JLabel teacherIdLabel;
-    private JTextField teacherIdTextField;
 
-    public GraphicMenu(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
+    private JTextField amountTextField;
+    private JTextField dateTextField;
+    private JTextField descriptionTextField;
+    private JTextField invoiceTextField;
+    private JTextField priceTextField;
+    private JTextField teacherIdTextField;
+    
+    private JButton addDeviceButton;
+    private JButton reportButton;
+    private JButton exitButton;
+
+    public GraphicMenu(FileReport file) {
         initComponents();
         buildMenu();
-        listeners(deviceList, userList);
+        listeners(file);
     }
                      
     private void initComponents() {
@@ -207,18 +208,18 @@ public class GraphicMenu extends JFrame {
         pack();
     }
 
-    private void listeners(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
+    private void listeners(FileReport file) {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         addDeviceButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                validation(evt, deviceList, userList);
+                addNewDevice(evt, file);
             }
         });
 
         reportButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                printForTeacher(deviceList, userList);
+                printForTeacher(file);
             }
         });
 
@@ -229,7 +230,16 @@ public class GraphicMenu extends JFrame {
         });
     }
 
-    private void validation(ActionEvent event, ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
+    private void clearTextFields() {
+        descriptionTextField.setText("");
+        amountTextField.setText("");
+        priceTextField.setText("");
+        dateTextField.setText("");
+        invoiceTextField.setText("");
+        teacherIdTextField.setText("");
+    }
+
+    private void addNewDevice(ActionEvent event, FileReport file) {
         String[] textFields = new String[] {
             descriptionTextField.getText(),
             amountTextField.getText(),
@@ -239,27 +249,25 @@ public class GraphicMenu extends JFrame {
             teacherIdTextField.getText()
         };
 
-        for (String text : textFields) {
-            System.out.println(text);
-        }
-
-        Updater.addDevice(deviceList, userList, textFields);
+        Validator.addDevice(file, textFields);
+        file.UpdateFile();
+        clearTextFields();
     }
 
-    private void printForTeacher(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
-        for(Teacher user : userList) {
+    private void printForTeacher(FileReport file) {
+        for(Teacher user : file.userList) {
             System.out.println("Teacher: " + user.getId());
             for (int idDevice : user.getListDevice()) {
-                System.out.println("    Descripción: "+ deviceList.get(idDevice).getDescription());
-                System.out.println("    Cantidad: " + deviceList.get(idDevice).getAmount());
-                System.out.println("    Precio: " + deviceList.get(idDevice).getPrice());
-                System.out.println("    Factura: " + deviceList.get(idDevice).getInvoice());
-                System.out.println("    Fecha: " + deviceList.get(idDevice).getDate() + "\n");
+                System.out.println("    Descripción: "+ file.deviceList.get(idDevice).getDescription());
+                System.out.println("    Cantidad: " + file.deviceList.get(idDevice).getAmount());
+                System.out.println("    Precio: " + file.deviceList.get(idDevice).getPrice());
+                System.out.println("    Factura: " + file.deviceList.get(idDevice).getInvoice());
+                System.out.println("    Fecha: " + file.deviceList.get(idDevice).getDate() + "\n");
             }
         }
     }
 
-    public void init(ArrayList<Device> deviceList, ArrayList<Teacher> userList) {
+    public void init(FileReport file) {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -281,7 +289,7 @@ public class GraphicMenu extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GraphicMenu(deviceList, userList).setVisible(true);
+                new GraphicMenu(file).setVisible(true);
             }
         });
     }                
